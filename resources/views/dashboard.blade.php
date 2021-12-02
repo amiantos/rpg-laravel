@@ -14,7 +14,7 @@
                         <x-character-card :character="$character" />
                     @endforeach
 
-                    <div x-data="{ show: true }">
+                    <div x-data="{ show: false }">
                         <div @click="show = !show" class='bg-gray-100 p-5 font-extrabold'>
                             ➕&nbsp;&nbsp;Create Character
                         </div>

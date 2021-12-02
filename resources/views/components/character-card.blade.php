@@ -12,11 +12,16 @@
         Exp {{ $character->experience }}/{{ $character->experience_to_next_level }}
     </div>
     <div>
+        <a href="{{route('play', $character->id)}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Play
+        </a>
+    </div>
+    <div>
         <form method="POST" action="{{url('character-destroy', $character->id)}}">
             @method('DELETE')
             @csrf
             <div class="flex items-center">
-                <button onclick="return confirm('Delete entry?')" type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <button onclick="return confirm('Delete entry?')" type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                     Delete
                 </button>
             </div>

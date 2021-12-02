@@ -20,6 +20,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+/* Characters */
+
 Route::get('/dashboard', function () {
     $user = Auth::user();
     return view('dashboard', [
@@ -29,5 +31,31 @@ Route::get('/dashboard', function () {
 
 Route::post('character-form', [CharacterController::class, 'store']);
 Route::delete('character-destroy/{id}', [CharacterController::class, 'destroy']);
+
+/* Playing */
+
+
+Route::get('/play/{id}', function($id) {
+    $user = Auth::user();
+    $character = Character::findOrFail($id);
+
+    if ($character->user_id != $user->id) {
+        abort(403);
+    }
+
+    return redirect()->route('room', ["id" => $character->id, "room_id" => $character->current_room_id]);
+})->middleware(['auth'])->name('play');
+
+Route::get('/play/{id}/room/{room_id}', function($id, $room_id) {
+    $user = Auth::user();
+    $character = Character::findOrFail($id);
+
+    if ($character->user_id != $user->id) {
+        abort(403);
+    }
+
+    return "foo";
+})->middleware(['auth'])->name('room');
+
 
 require __DIR__.'/auth.php';
