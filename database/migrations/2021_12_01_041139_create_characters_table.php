@@ -20,7 +20,7 @@ class CreateCharactersTable extends Migration
             $table->string('name');
             $table->integer('level')->default(1);
             $table->bigInteger('experience')->default(0);
-            $table->bigInteger('experience_to_next_level')->default(0);
+            $table->bigInteger('experience_to_next_level')->default(100);
             $table->integer('turn_count')->default(0);
 
             $table->integer('strength')->default(1);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Character;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CharacterController extends Controller
 {
@@ -35,7 +36,11 @@ class CharacterController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $character = new Character;
+        $character->name = $request->name;
+        $character->user_id = $request->user()->id;
+        $character->save();
+        return redirect('/dashboard');
     }
 
     /**
@@ -72,14 +77,18 @@ class CharacterController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Character  $character
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Character $character)
+    public function destroy($id)
     {
-        //
+        $character = Character::findOrFail($id);
+
+        $user = Auth::user();
+
+        if ($character->user_id != $user->id) {
+            abort(403);
+        }
+
+        $character->delete();
+
+        return redirect('/dashboard');
     }
 }

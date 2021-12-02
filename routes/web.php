@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CharacterController;
 use App\Models\Character;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -25,5 +26,8 @@ Route::get('/dashboard', function () {
         'characters' => $user->characters,
     ]);
 })->middleware(['auth'])->name('dashboard');
+
+Route::post('character-form', [CharacterController::class, 'store']);
+Route::delete('character-destroy/{id}', [CharacterController::class, 'destroy']);
 
 require __DIR__.'/auth.php';
