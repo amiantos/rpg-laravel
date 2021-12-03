@@ -22,12 +22,12 @@ Route::get('/', function () {
 
 /* Characters */
 
-Route::get('/dashboard', function () {
+Route::get('/characters', function () {
     $user = Auth::user();
-    return view('dashboard', [
+    return view('characters', [
         'characters' => $user->characters,
     ]);
-})->middleware(['auth'])->name('dashboard');
+})->middleware(['auth'])->name('characters');
 
 Route::post('character-form', [CharacterController::class, 'store']);
 Route::delete('character-destroy/{id}', [CharacterController::class, 'destroy']);
