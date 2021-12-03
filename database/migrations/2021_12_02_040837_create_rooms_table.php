@@ -17,8 +17,8 @@ class CreateRoomsTable extends Migration
             $table->id();
             $table->timestamps();
 
-            $table->foreignId('character_id')->constrained();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('character_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
 
             $table->integer('x')->default(0);
             $table->integer('y')->default(0);
