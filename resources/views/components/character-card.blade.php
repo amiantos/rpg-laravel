@@ -1,6 +1,6 @@
 @props(['character'])
 
-<div class="bg-gray-300 p-3 rounded-lg shadow-lg mb-5 flex justify-between">
+<div class="bg-gray-700 p-3 rounded-lg shadow-lg mb-5 flex justify-between">
     <div>{{ $character->name }}</div>
     <div class="text-gray-500 text-right">
         Level {{ $character->level }}
