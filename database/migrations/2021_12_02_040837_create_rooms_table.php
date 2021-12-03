@@ -22,6 +22,7 @@ class CreateRoomsTable extends Migration
 
             $table->integer('x')->default(0);
             $table->integer('y')->default(0);
+            $table->integer('z')->default(1);
 
             $table->unsignedBigInteger('north')->nullable();
             $table->foreign('north')->references('id')->on('rooms');
