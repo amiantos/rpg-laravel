@@ -40,7 +40,7 @@ class CharacterController extends Controller
         $character->name = $request->name;
         $character->user_id = $request->user()->id;
         $character->save();
-        return redirect('/dashboard');
+        return redirect('/characters');
     }
 
     /**
@@ -89,6 +89,6 @@ class CharacterController extends Controller
 
         $character->delete();
 
-        return redirect('/dashboard');
+        return redirect('/characters');
     }
 }
