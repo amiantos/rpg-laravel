@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CharacterController;
 use App\Models\Character;
+use App\Models\Room;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -43,19 +44,25 @@ Route::get('/play/{id}', function($id) {
         abort(403);
     }
 
-    return redirect()->route('room', ["id" => $character->id, "room_id" => $character->current_room_id]);
-})->middleware(['auth'])->name('play');
+    $room = $character->room;
 
-Route::get('/play/{id}/room/{room_id}', function($id, $room_id) {
-    $user = Auth::user();
-    $character = Character::findOrFail($id);
+    if (is_null($room)) {
+        $room = new Room;
+        $room->description = "This is an auto-generated first room.";
+        $room->character_id = $character->id;
+        $room->user_id = $user->id;
+        $room->save();
 
-    if ($character->user_id != $user->id) {
-        abort(403);
+        $character->current_room_id = $room->id;
+        $character->save();
     }
 
-    return "foo";
-})->middleware(['auth'])->name('room');
+    $room->populate($user, $character);
 
+    $room->refresh();
+    $character->refresh();
+
+    return view('play', ['character' => $character, 'room' => $room]);
+})->middleware(['auth'])->name('play');
 
 require __DIR__.'/auth.php';

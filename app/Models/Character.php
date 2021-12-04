@@ -10,7 +10,7 @@ class Character extends Model
     use HasFactory;
 
     public function room() {
-        return $this->hasOne(Room::class);
+        return $this->hasOne(Room::class, 'id', 'current_room_id');
     }
 
     public function user() {

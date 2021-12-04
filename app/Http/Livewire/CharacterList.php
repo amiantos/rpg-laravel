@@ -24,5 +24,6 @@ class CharacterList extends Component
         $character->save();
         
         $this->characters = $user->characters;
+        $this->newCharacterName = "";
     }
 }
