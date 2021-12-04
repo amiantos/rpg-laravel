@@ -60,6 +60,11 @@ class CreateRoomsTable extends Migration
      */
     public function down()
     {
+        Schema::table('characters', function (Blueprint $table) {
+            $table->dropForeign(['current_room_id']);
+            $table->dropColumn('current_room_id');
+        });
+
         Schema::dropIfExists('rooms');
     }
 }
