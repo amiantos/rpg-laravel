@@ -62,7 +62,9 @@ Route::get('/play/{id}', function($id) {
     $room->refresh();
     $character->refresh();
 
-    return view('play', ['character' => $character, 'room' => $room]);
+    $all_rooms = Room::where('character_id', $character->id)->where('z', $room->z)->get();
+
+    return view('play', ['character' => $character, 'room' => $room, 'all_rooms' => $all_rooms]);
 })->middleware(['auth'])->name('play');
 
 require __DIR__.'/auth.php';

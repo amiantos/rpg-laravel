@@ -24,5 +24,7 @@ class RoomPanel extends Component
         $next_room->populate(Auth::user(), $character);
 
         $this->room = $next_room;
+
+        $this->emit('roomChanged', $next_room->id);
     }
 }

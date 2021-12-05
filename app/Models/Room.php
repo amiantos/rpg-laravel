@@ -87,7 +87,7 @@ class Room extends Model
             $directions_to_generate = [];
         } else {
             // Generate more rooms if needed?
-            $number_of_exits = rand(2, 4);
+            $number_of_exits = rand(1, 3);
 
             $exits_to_go = $room_count - 10;
             $number_of_exits = $exits_to_go > $number_of_exits ? $exits_to_go : $number_of_exits;
@@ -95,18 +95,29 @@ class Room extends Model
             if (!is_null($this->north)) { 
                 unset($directions_to_generate[0]);
                 --$number_of_exits;
+            } elseif ($this->x + 1 > 2) {
+                unset($directions_to_generate[0]);
             }
+
             if (!is_null($this->south)) { 
                 unset($directions_to_generate[1]);
                 --$number_of_exits;
+            } elseif ($this->x - 1 < -2) {
+                unset($directions_to_generate[1]);
             }
+
             if (!is_null($this->east)) { 
                 unset($directions_to_generate[2]);
                 --$number_of_exits;
+            } elseif ($this->y + 1 > 2) {
+                unset($directions_to_generate[2]);
             }
+
             if (!is_null($this->west)) { 
                 unset($directions_to_generate[3]);
                 --$number_of_exits;
+            } elseif ($this->y - 1 < -2) {
+                unset($directions_to_generate[3]);
             }
 
             if ($number_of_exits < 1) {
