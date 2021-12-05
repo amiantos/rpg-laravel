@@ -21,7 +21,10 @@ class RoomPanel extends Component
         $character->save();
 
         $next_room = Room::findOrFail($id);
-        // $next_room->populate(Auth::user(), $character);
+        if (!$next_room->visited) {
+            $next_room->visited = True;
+            $next_room->save();
+        }
 
         $this->room = $next_room;
 

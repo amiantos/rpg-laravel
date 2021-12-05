@@ -44,6 +44,8 @@ class CreateRoomsTable extends Migration
 
             $table->boolean('filled')->default(false);
 
+            $table->boolean('visited')->default(false);
+
             $table->text('description')->default("This room does not have a description yet.");
         });
 

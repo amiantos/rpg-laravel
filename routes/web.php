@@ -53,9 +53,11 @@ Route::get('/play/{id}', function($id) {
         $floor->user_id = $user->id;
         $floor->save();
 
-        $floor->generate(z: 1);
+        $floor->generate(0,0,1);
 
-        $character->room_id = $floor->room_id;
+        $character->room_id = $floor->first_room->id;
+        $floor->first_room->visited = True;
+        $floor->first_room->save();
         $character->save();
     }
 

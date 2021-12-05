@@ -64,15 +64,14 @@
             $rooms[strval($room->x) . strval($room->y)] = $room;
         }
     @endphp
-    <div class="grid grid-cols-7 w-25 h-25 gap-0 relative float-right border border-black">
+    <div class="grid grid-cols-7 gap-0 relative float-right border-2 border-black">
         @foreach ($room_coords as $coord)
-            <div class='flex w-3 h-3 border-black 
+            <div class='flex w-5 h-5 border-black 
             @if ($coord == $current_coord)
                 bg-red-500
-            @else
-                bg-gray-500 
             @endif
-            @if (in_array($coord, array_keys($rooms)))
+            @if ($rooms[$coord]->visited)
+                bg-gray-500 
                 @if (is_null($rooms[$coord]->north))
                     border-t
                 @endif
@@ -85,6 +84,8 @@
                 @if (is_null($rooms[$coord]->west))
                     border-l
                 @endif
+            @else
+                bg-gray-400 
             @endif
             '></div>
         @endforeach
