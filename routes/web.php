@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CharacterController;
 use App\Models\Character;
+use App\Models\Floor;
 use App\Models\Room;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -47,24 +48,23 @@ Route::get('/play/{id}', function($id) {
     $room = $character->room;
 
     if (is_null($room)) {
-        $room = new Room;
-        $room->description = "This is an auto-generated first room.";
-        $room->character_id = $character->id;
-        $room->user_id = $user->id;
-        $room->save();
+        $floor = new Floor;
+        $floor->character_id = $character->id;
+        $floor->user_id = $user->id;
+        $floor->save();
 
-        $character->current_room_id = $room->id;
+        $floor->generate(z: 1);
+
+        $character->room_id = $floor->room_id;
         $character->save();
     }
 
-    $room->populate($user, $character);
-
-    $room->refresh();
+    // $room->refresh();
     $character->refresh();
 
-    $all_rooms = Room::where('character_id', $character->id)->where('z', $room->z)->get();
+    $all_rooms = Room::where('character_id', $character->id)->where('z', 1)->get();
 
-    return view('play', ['character' => $character, 'room' => $room, 'all_rooms' => $all_rooms]);
+    return view('play', ['character' => $character, 'room' => $character->room, 'all_rooms' => $all_rooms]);
 })->middleware(['auth'])->name('play');
 
 require __DIR__.'/auth.php';

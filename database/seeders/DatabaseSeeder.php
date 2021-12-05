@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
         //         "user_id" => $me->id,
         //         "character_id" => $my_character->id,
         //     ]);
-        //     $my_character->current_room_id = $room->id;
+        //     $my_character->room_id = $room->id;
         //     $my_character->save();
         // }
 

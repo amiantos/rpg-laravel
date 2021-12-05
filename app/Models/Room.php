@@ -9,6 +9,8 @@ class Room extends Model
 {
     use HasFactory;
 
+    private $max_rooms = 20;
+
     protected $attributes = [
         'x' => 0,
         'y' => 0,
@@ -16,156 +18,11 @@ class Room extends Model
     ];
 
     public function character() {
-        return $this->hasOne(Character::class, 'current_room_id');
+        return $this->hasOne(Character::class, 'room_id');
     }
 
     public function user() {
         return $this->hasOne(User::class);
-    }
-
-    public function populate($user, $character) {
-        if ($this->filled) {
-            return;
-        }
-
-        $direction_diffs = [
-            "north" => [1, 0],
-            "south" => [-1, 0],
-            "east" => [0, 1],
-            "west" => [0, -1]
-        ];
-
-        // Find Existing Connecting Rooms
-        $directions_to_generate = ["north", "south", "east", "west"];
-        foreach ($directions_to_generate as $direction) {
-            // Don't generate rooms for directions that have rooms already
-            if (
-                ($direction == "north" && !is_null($this->north)) ||
-                ($direction == "south" && !is_null($this->south)) ||
-                ($direction == "east" && !is_null($this->east)) ||
-                ($direction == "west" && !is_null($this->west))
-                ) {
-                continue;
-            }
-
-
-            // Search out for existing rooms at room destinations
-            $x_to_search = $this->x + $direction_diffs[$direction][0];
-            $y_to_search = $this->y + $direction_diffs[$direction][1];
-
-            $new_room = Room::where('x', $x_to_search)->where('y', $y_to_search)->where('z', $this->z)->where('character_id', $this->character->id)->first();
-
-            if (is_null($new_room)) {
-                continue;
-            }
-
-            switch ($direction) {
-                case "north":
-                    $this->north = $new_room->id;
-                    $new_room->south = $this->id;
-                    break;
-                case "south":
-                    $this->south = $new_room->id;
-                    $new_room->north = $this->id;
-                    break;
-                case "east":
-                    $this->east = $new_room->id;
-                    $new_room->west = $this->id;
-                    break;
-                case "west":
-                    $this->west = $new_room->id;
-                    $new_room->east = $this->id;
-                    break;
-            }
-
-            $new_room->save();
-           
-        }
-
-        $room_count = Room::where('z', $this->z)->where('character_id', $this->character->id)->count();
-        if ($room_count >= 10) {
-            $directions_to_generate = [];
-        } else {
-            // Generate more rooms if needed?
-            $number_of_exits = rand(1, 3);
-
-            $exits_to_go = $room_count - 10;
-            $number_of_exits = $exits_to_go > $number_of_exits ? $exits_to_go : $number_of_exits;
-            
-            if (!is_null($this->north)) { 
-                unset($directions_to_generate[0]);
-                --$number_of_exits;
-            } elseif ($this->x + 1 > 2) {
-                unset($directions_to_generate[0]);
-            }
-
-            if (!is_null($this->south)) { 
-                unset($directions_to_generate[1]);
-                --$number_of_exits;
-            } elseif ($this->x - 1 < -2) {
-                unset($directions_to_generate[1]);
-            }
-
-            if (!is_null($this->east)) { 
-                unset($directions_to_generate[2]);
-                --$number_of_exits;
-            } elseif ($this->y + 1 > 2) {
-                unset($directions_to_generate[2]);
-            }
-
-            if (!is_null($this->west)) { 
-                unset($directions_to_generate[3]);
-                --$number_of_exits;
-            } elseif ($this->y - 1 < -2) {
-                unset($directions_to_generate[3]);
-            }
-
-            if ($number_of_exits < 1) {
-                $directions_to_generate = [];
-            } else {
-                while (count($directions_to_generate) > $number_of_exits) {
-                    unset($directions_to_generate[array_rand($directions_to_generate)]);
-                }
-            }
-        }
-
-        // Generate new rooms if needed
-        foreach ($directions_to_generate as $direction) {
-            $new_room = new Room;
-            $new_room->description = "This is an auto-generated off-shoot room.";
-            $new_room->z = $this->z;
-            $new_room->x = $this->x + $direction_diffs[$direction][0];
-            $new_room->y = $this->y + $direction_diffs[$direction][1];
-            $new_room->character_id = $character->id;
-            $new_room->user_id = $user->id;
-            $new_room->save();
-
-            switch ($direction) {
-                case "north":
-                    $this->north = $new_room->id;
-                    $new_room->south = $this->id;
-                    break;
-                case "south":
-                    $this->south = $new_room->id;
-                    $new_room->north = $this->id;
-                    break;
-                case "east":
-                    $this->east = $new_room->id;
-                    $new_room->west = $this->id;
-                    break;
-                case "west":
-                    $this->west = $new_room->id;
-                    $new_room->east = $this->id;
-                    break;
-            }
-
-            $new_room->save();
-           
-        }
-
-        $this->filled = True;
-        $this->description = $this->createDescription();
-        $this->save();
     }
 
     public function createDescription() {

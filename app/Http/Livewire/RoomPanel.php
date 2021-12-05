@@ -17,11 +17,11 @@ class RoomPanel extends Component
 
     public function changeRoom($id) {
         $character = $this->room->character;
-        $character->current_room_id = $id;
+        $character->room_id = $id;
         $character->save();
 
         $next_room = Room::findOrFail($id);
-        $next_room->populate(Auth::user(), $character);
+        // $next_room->populate(Auth::user(), $character);
 
         $this->room = $next_room;
 

@@ -3,6 +3,9 @@
     <div>
         {{ $room->description }}
     </div>
+    <div>
+        {{ $room->x }},{{ $room->y }}
+    </div>
 
     @if ($room->north)
         <button wire:click="changeRoom({{$room->north}})">North</button>

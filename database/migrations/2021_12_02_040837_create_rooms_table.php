@@ -17,8 +17,8 @@ class CreateRoomsTable extends Migration
             $table->id();
             $table->timestamps();
 
-            $table->foreignId('character_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('character_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
 
             $table->integer('x')->default(0);
             $table->integer('y')->default(0);
@@ -48,8 +48,8 @@ class CreateRoomsTable extends Migration
         });
 
         Schema::table('characters', function (Blueprint $table) {
-            $table->unsignedBigInteger('current_room_id')->nullable();
-            $table->foreign('current_room_id')->references('id')->on('rooms');
+            $table->unsignedBigInteger('room_id')->nullable();
+            $table->foreign('room_id')->references('id')->on('rooms');
         });
     }
 
@@ -61,8 +61,8 @@ class CreateRoomsTable extends Migration
     public function down()
     {
         Schema::table('characters', function (Blueprint $table) {
-            $table->dropForeign(['current_room_id']);
-            $table->dropColumn('current_room_id');
+            $table->dropForeign(['room_id']);
+            $table->dropColumn('room_id');
         });
 
         Schema::dropIfExists('rooms');

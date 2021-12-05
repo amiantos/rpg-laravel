@@ -1,57 +1,90 @@
 <div>
     @php
         $room_coords = [
-            "2-2",
-            "2-1",
-            "20",
-            "21",
-            "22",
-
-            "1-2",
-            "1-1",
-            "10",
-            "11",
-            "12",
-
-            "0-2",
-            "0-1",
             "00",
+            "10",
+            "20",
+            "30",
+            "40",
+            "50",
+            "60",
+
             "01",
+            "11",
+            "21",
+            "31",
+            "41",
+            "51",
+            "61",
+
             "02",
+            "12",
+            "22",
+            "32",
+            "42",
+            "52",
+            "62",
 
-            "-1-2",
-            "-1-1",
-            "-10",
-            "-11",
-            "-12",
+            "03",
+            "13",
+            "23",
+            "33",
+            "43",
+            "53",
+            "63",
 
-            "-2-2",
-            "-2-1",
-            "-20",
-            "-21",
-            "-22",
+            "04",
+            "14",
+            "24",
+            "34",
+            "44",
+            "54",
+            "64",
+
+            "05",
+            "15",
+            "25",
+            "35",
+            "45",
+            "55",
+            "65",
+
+            "06",
+            "16",
+            "26",
+            "36",
+            "46",
+            "56",
+            "66",
         ];
         $rooms = [];
-        $current_coord = strval($current_room->x) . strval($current_room->y)
+        $current_coord = strval($current_room->x) . strval($current_room->y);
+
+        foreach ($all_rooms as $room) {
+            $rooms[strval($room->x) . strval($room->y)] = $room;
+        }
     @endphp
-
-    @foreach ($all_rooms as $room)
-    
-        {{ $rooms[] = strval($room->x) . strval($room->y) }}
-        
-    @endforeach
-
-    @foreach ($rooms as $room_num)
-        {{$room_num}}
-    @endforeach
-
-    <div class="grid grid-cols-5 w-25 h-25 gap-1 relative float-right">
+    <div class="grid grid-cols-7 w-25 h-25 gap-0 relative float-right border border-black">
         @foreach ($room_coords as $coord)
-            <div class='flex w-5 h-5
+            <div class='flex w-3 h-3 border-black 
             @if ($coord == $current_coord)
                 bg-red-500
-            @elseif (in_array($coord, $rooms))
-                bg-black
+            @else
+                bg-gray-500 
+            @endif
+            @if (in_array($coord, array_keys($rooms)))
+                @if (is_null($rooms[$coord]->north))
+                    border-t
+                @endif
+                @if (is_null($rooms[$coord]->south))
+                    border-b
+                @endif
+                @if (is_null($rooms[$coord]->east))
+                    border-r
+                @endif
+                @if (is_null($rooms[$coord]->west))
+                    border-l
+                @endif
             @endif
             '></div>
         @endforeach
