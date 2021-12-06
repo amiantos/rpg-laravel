@@ -14,11 +14,11 @@ class Floor extends Model
     }
 
     public function first_room() {
-        return $this->hasOne(Room::class);
+        return $this->hasOne(Room::class, 'id', 'room_id');
     }
 
-    public function generate($start_x = 0, $start_y = 0, $z) {
-        $maze_size = 7;
+    public function generate($start_x, $start_y, $z) {
+        $maze_size = 4;
         $maze = $this->generateMaze($maze_size);
 
         $rooms = [];

@@ -61,7 +61,6 @@ Route::get('/play/{id}', function($id) {
         $character->save();
     }
 
-    // $room->refresh();
     $character->refresh();
 
     $all_rooms = Room::where('character_id', $character->id)->where('z', 1)->get();

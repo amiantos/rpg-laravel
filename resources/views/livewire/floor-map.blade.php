@@ -5,35 +5,35 @@
             "10",
             "20",
             "30",
-            "40",
+            /*"40",
             "50",
-            "60",
+            "60",*/
 
             "01",
             "11",
             "21",
             "31",
-            "41",
+            /*"41",
             "51",
-            "61",
+            "61",*/
 
             "02",
             "12",
             "22",
             "32",
-            "42",
+            /*"42",
             "52",
-            "62",
+            "62",*/
 
             "03",
             "13",
             "23",
             "33",
-            "43",
+            /*"43",
             "53",
-            "63",
+            "63",*/
 
-            "04",
+            /*"04",
             "14",
             "24",
             "34",
@@ -55,7 +55,7 @@
             "36",
             "46",
             "56",
-            "66",
+            "66",*/
         ];
         $rooms = [];
         $current_coord = strval($current_room->x) . strval($current_room->y);
@@ -64,7 +64,7 @@
             $rooms[strval($room->x) . strval($room->y)] = $room;
         }
     @endphp
-    <div class="grid grid-cols-7 gap-0 relative float-right border-2 border-black">
+    <div class="grid grid-cols-4 gap-0 relative float-right border-2 border-black">
         @foreach ($room_coords as $coord)
             <div class='flex w-5 h-5 border-black 
             @if ($coord == $current_coord)

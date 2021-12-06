@@ -22,4 +22,12 @@
     @if ($room->west)
         <button wire:click="changeRoom({{$room->west}})">West</button>
     @endif
+
+    @if ($room->below)
+        <button wire:click="changeRoom({{$room->below}})">Stairs Down</button>
+    @endif
+
+    @if ($room->above)
+        <button wire:click="changeRoom({{$room->above}})">Stairs Up</button>
+    @endif
 </div>
