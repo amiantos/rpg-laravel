@@ -71,7 +71,7 @@
                 bg-red-500
             @endif
             @if ($rooms[$coord]->visited)
-                bg-gray-500 
+                bg-gray-300 
                 @if (is_null($rooms[$coord]->north))
                     border-t
                 @endif
@@ -85,7 +85,7 @@
                     border-l
                 @endif
             @else
-                bg-gray-400 
+                bg-black
             @endif
             '></div>
         @endforeach
