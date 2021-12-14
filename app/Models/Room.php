@@ -17,6 +17,8 @@ class Room extends Model
         'z' => 1,
     ];
 
+    // Properties
+
     public function character() {
         return $this->hasOne(Character::class, 'room_id');
     }
@@ -24,6 +26,16 @@ class Room extends Model
     public function user() {
         return $this->hasOne(User::class);
     }
+
+    public function chests() {
+        return $this->hasMany(Chest::class);
+    }
+
+    public function weapons() {
+        return $this->hasMany(Weapon::class, 'in_room_id');
+    }
+
+    // Methods
 
     public function createDescription() {
         /* Introductory Statement On Room */

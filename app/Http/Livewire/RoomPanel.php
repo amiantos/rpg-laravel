@@ -2,8 +2,10 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Chest;
 use App\Models\Floor;
 use App\Models\Room;
+use App\Models\Weapon;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -50,5 +52,28 @@ class RoomPanel extends Component
         $this->room = $next_room;
 
         $this->emit('roomChanged', $next_room->id);
+    }
+
+    public function openChest($id) {
+        $chest = Chest::findOrFail($id);
+
+        if ($chest->type == "entry") {
+            for ($i = 1; $i <= 3; $i++) {
+                $new_weapon = new Weapon;
+                $new_weapon->character_id = $chest->character_id;
+                $new_weapon->user_id = $chest->user_id;
+                
+                $new_weapon->in_room_id = $chest->room_id;
+
+                $new_weapon->generate(1);
+                $new_weapon->save();
+            }
+        } else {
+            // Do basic chest things
+        }
+
+        $chest->delete();
+
+        $this->room->refresh();
     }
 }

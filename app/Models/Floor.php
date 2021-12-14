@@ -22,6 +22,7 @@ class Floor extends Model
         $maze = $this->generateMaze($maze_size);
 
         $rooms = [];
+        // TODO: Create and save rooms in a transaction
         for ($x=0; $x < $maze_size; $x++) {
             for ($y=0; $y < $maze_size; $y++) {
                 $new_room = new Room;
@@ -37,8 +38,19 @@ class Floor extends Model
                 $rooms[$x][$y] = $new_room;
             }
         }
+        
+        $entry_room = $rooms[$start_x][$start_y];
+        $this->room_id = $entry_room->id;
 
-        $this->room_id = $rooms[$start_x][$start_y]->id;
+        if ($z == 1) {
+            $new_chest = new Chest;
+            $new_chest->room_id = $entry_room->id;
+            $new_chest->character_id = $this->character_id;
+            $new_chest->user_id = $this->user_id;
+            $new_chest->type = "entry";
+            $new_chest->name = "Gilded Chest";
+            $new_chest->save();
+        }
 
         $this->save();
 
